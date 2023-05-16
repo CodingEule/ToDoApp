@@ -9,8 +9,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 // Klasse für die Beschreibung und Datumswahl einer Aufgabe
@@ -20,13 +22,13 @@ public class task_details_activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.task_details);
+        setContentView(R.layout.task_details_activity);
 
         //View Id zuweisen
         EditText taskTitleDetails = findViewById(R.id.task_title_details);
         EditText taskDescriptionDetails = findViewById(R.id.task_description_details);
         EditText selectDate = findViewById(R.id.select_date_details);
-        AppCompatButton detailCancleBtn = findViewById(R.id.task_detail_cancel_btn);
+        AppCompatButton detailCancelBtn = findViewById(R.id.task_detail_cancel_btn);
         AppCompatButton detailAcceptBtn = findViewById(R.id.task_detail_accept_btn);
 
         //title auf vorher ausgewählten Title Setzen.
@@ -37,17 +39,18 @@ public class task_details_activity extends AppCompatActivity {
                 taskTitleDetails.setText(taskTitle);
             }
         }
+
         //prüfen ob description vorhanden ist und anzeigen wenn
         String taskDescription = intent.getStringExtra("taskDescription");
         if(taskDescription != null){
             taskDescriptionDetails.setText(taskDescription);
         }
+
         //prüfen ob date vorhanden ist und anzeigen wenn
         String taskDate = intent.getStringExtra("taskDate");
         if(taskDate != null){
             selectDate.setText(taskDate);
         }
-
 
         //Date Picker wird eingerichtet
                selectDate.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +72,33 @@ public class task_details_activity extends AppCompatActivity {
                     }
                 }, year, month, day);
                 datePickerDialog.show();
+            }
+        });
+        // funktion des detailCancelBtn in der task_details.xml
+        detailCancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+
+            }
+        });
+
+        //funktion des detailAcceptBtn in der task_detail.xml
+        detailAcceptBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String description = taskDescriptionDetails.getText().toString();
+                String date = selectDate.getText().toString();
+                String title = taskTitleDetails.getText().toString();
+                Task task = getIntent().getParcelableExtra("task");
+
+                if(task != null){
+                    task.setDate(date);
+                    task.setDescription(description);
+                    task.setTitle(title);
+                }
+
+                finish();
             }
         });
 

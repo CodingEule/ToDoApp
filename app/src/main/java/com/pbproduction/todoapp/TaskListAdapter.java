@@ -68,6 +68,8 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
                 intent.putExtra("taskTitle", task.getTitle());
                 intent.putExtra("taskDescription", task.getDescription());
                 intent.putExtra("taskDate", task.getDate());
+                intent.putExtra("position", position);
+                intent.putExtra("task", task);
                 context.startActivity(intent);
 
 
